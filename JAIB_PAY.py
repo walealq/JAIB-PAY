@@ -1,23 +1,25 @@
 import streamlit as st
 
+# Set page configuration for a wide layout and a custom title/icon
 st.set_page_config(page_title="Jaib Pay", page_icon="🧾", layout="wide")
 
 # --- Product data with placeholder image URLs (examples only) ---
+# Updated image URLs for better representation where possible.
 products = {
     "ألعاب": {
         "PUBG": [
-            {"name": "60 UC", "price": 3, "image": "https://static.pubg.com/images/uc_60.png"},
-            {"name": "120 UC", "price": 5, "image": "https://static.pubg.com/images/uc_120.png"},
-            {"name": "325 UC", "price": 10, "image": "https://static.pubg.com/images/uc_325.png"},
-            {"name": "600 UC", "price": 18, "image": "https://static.pubg.com/images/uc_600.png"},
-            {"name": "1300 UC", "price": 35, "image": "https://static.pubg.com/images/uc_1300.png"},
-            {"name": "2700 UC", "price": 65, "image": "https://static.pubg.com/images/uc_2700.png"},
+            {"name": "60 UC", "price": 3, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+60UC"},
+            {"name": "120 UC", "price": 5, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+120UC"},
+            {"name": "325 UC", "price": 10, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+325UC"},
+            {"name": "600 UC", "price": 18, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+600UC"},
+            {"name": "1300 UC", "price": 35, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+1300UC"},
+            {"name": "2700 UC", "price": 65, "image": "https://placehold.co/150x120/FFD700/000000?text=PUBG+2700UC"},
         ],
         "Free Fire": [
-            {"name": "100 Diamonds", "price": 2, "image": "https://freefire.com/images/diamonds_100.png"},
-            {"name": "310 Diamonds", "price": 6, "image": "https://freefire.com/images/diamonds_310.png"},
-            {"name": "520 Diamonds", "price": 10, "image": "https://freefire.com/images/diamonds_520.png"},
-            {"name": "1100 Diamonds", "price": 20, "image": "https://freefire.com/images/diamonds_1100.png"},
+            {"name": "100 Diamonds", "price": 2, "image": "https://placehold.co/150x120/FF4500/FFFFFF?text=Free+Fire+100D"},
+            {"name": "310 Diamonds", "price": 6, "image": "https://placehold.co/150x120/FF4500/FFFFFF?text=Free+Fire+310D"},
+            {"name": "520 Diamonds", "price": 10, "image": "https://placehold.co/150x120/FF4500/FFFFFF?text=Free+Fire+520D"},
+            {"name": "1100 Diamonds", "price": 20, "image": "https://placehold.co/150x120/FF4500/FFFFFF?text=Free+Fire+1100D"},
         ],
         "Call of Duty Mobile": [
             {"name": "80 CP", "price": 1, "image": "https://placehold.co/150x120/4A4A4A/FFFFFF?text=CoD+80CP"},
@@ -101,7 +103,7 @@ if 'search_query' not in st.session_state:
     st.session_state['search_query'] = ''
 
 
-# Language data
+# Language data for translation
 lang_data = {
     'ar': {
         'app_title': "Jaib Pay 🧾",
@@ -128,7 +130,10 @@ lang_data = {
         'cart': "🛒 سلة المشتريات",
         'language_label': "اللغة:",
         'arabic': "العربية",
-        'english': "الإنجليزية"
+        'english': "الإنجليزية",
+        'selected_product_summary': "ملخص المنتج المختار:",
+        'logo_alt': "شعار جايب باي",
+        'payment_methods_description': "اختر طريقة الدفع المفضلة لديك لإتمام عملية الشراء."
     },
     'en': {
         'app_title': "Jaib Pay 🧾",
@@ -155,7 +160,10 @@ lang_data = {
         'cart': "🛒 Shopping Cart",
         'language_label': "Language:",
         'arabic': "Arabic",
-        'english': "English"
+        'english': "English",
+        'selected_product_summary': "Selected Product Summary:",
+        'logo_alt': "Jaib Pay Logo",
+        'payment_methods_description': "Choose your preferred payment method to complete your purchase."
     }
 }
 
@@ -177,7 +185,7 @@ def get_category_icon(category_name):
     else:
         return ""
 
-# Custom CSS for overall styling
+# Custom CSS for overall styling and new logo styling
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -204,6 +212,15 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         border-radius: 0.75rem; /* rounded-xl */
         margin-bottom: 2rem;
+        display: flex; /* Use flexbox for header alignment */
+        align-items: center; /* Vertically center items */
+        justify-content: space-between; /* Distribute items */
+    }
+
+    /* Logo styling */
+    .header-logo {
+        height: 50px; /* Adjust logo height as needed */
+        margin-right: 1rem; /* Space between logo and other header elements */
     }
 
     /* Adjust Streamlit's default button styling for category buttons */
@@ -231,7 +248,7 @@ st.markdown("""
     }
     .stButton > button:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.5); /* focus:ring-4 focus:ring-blue-300 */
+        box_shadow: 0 0 0 4px rgba(96, 165, 250, 0.5); /* focus:ring-4 focus:ring-blue-300 */
     }
 
     /* Specific style for selected category button */
@@ -358,12 +375,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# --- Header Section: Search, Language, Login, Cart ---
+# --- Header Section: Logo, Search, Language, Login, Cart ---
 # Use a container for the header to apply consistent styling
 with st.container():
-    header_cols = st.columns([0.8, 2, 0.5, 0.5]) # Adjust column ratios as needed
+    # Adjusted column ratios to accommodate the logo
+    header_cols = st.columns([0.5, 0.8, 2, 0.5, 0.5])
 
     with header_cols[0]:
+        # Logo display
+        st.markdown(f"""
+            <img src="https://placehold.co/100x50/2563EB/FFFFFF?text=JaibPay" alt="{_('logo_alt')}" class="header-logo">
+        """, unsafe_allow_html=True)
+
+    with header_cols[1]:
         # Language selection
         st.markdown(f"<div style='direction: {'rtl' if st.session_state['language'] == 'ar' else 'ltr'};'>", unsafe_allow_html=True)
         lang_choice = st.radio(
@@ -382,7 +406,7 @@ with st.container():
             st.session_state['language'] = 'en'
             st.rerun()
 
-    with header_cols[1]:
+    with header_cols[2]:
         # Search bar
         st.session_state['search_query'] = st.text_input(
             "",
@@ -391,7 +415,7 @@ with st.container():
             label_visibility="collapsed"
         )
 
-    with header_cols[2]:
+    with header_cols[3]:
         # Login button
         st.markdown(f"""
             <button class="buy-button" style="width:100%; background-color:#6b7280; margin-bottom:0; height:40px; font-size:1rem; box-shadow:none;" onclick="alert('{_('login')} functionality not implemented yet.')">
@@ -401,7 +425,7 @@ with st.container():
         # Note: Streamlit buttons cannot directly trigger JS alerts. Using a workaround.
         # For a real app, this would trigger a Streamlit modal or state change.
 
-    with header_cols[3]:
+    with header_cols[4]:
         # Cart button
         st.markdown(f"""
             <button class="buy-button" style="width:100%; background-color:#6b7280; margin-bottom:0; height:40px; font-size:1rem; box-shadow:none;" onclick="alert('{_('cart')} functionality not implemented yet.')">
@@ -493,69 +517,4 @@ if category:
 # --- Payment Options ---
 if st.session_state['selected_package']:
     st.markdown("---")
-    st.markdown(f"<h3 style='text-align:center; color:#333;'>{_('choose_payment_method')}</h3>", unsafe_allow_html=True)
-
-    pay_option = st.radio(
-        _('choose_payment_method'),
-        (_('purchase_code'), _('visa_card')),
-        key="payment_method_radio",
-        horizontal=True,
-        label_visibility="collapsed"
-    )
-
-    # Use a container for the payment form for better visual grouping
-    with st.container():
-        st.markdown("""
-            <style>
-            .payment-form-container {
-                background-color: #ffffff;
-                padding: 2rem;
-                border-radius: 0.75rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                max-width: 600px;
-                margin: 2rem auto; /* Center the form */
-            }
-            </style>
-            <div class="payment-form-container">
-        """, unsafe_allow_html=True)
-
-        if pay_option == _('purchase_code'):
-            code = st.text_input(_('enter_purchase_code'), key="purchase_code_input")
-
-            if st.button(_('confirm_payment'), key="confirm_code_payment_btn"):
-                if code.startswith("JP") and len(code) == 10:
-                    st.session_state['payment_message_type'] = 'success'
-                    st.session_state['payment_message_text'] = _('purchase_success_code').format(package_name=st.session_state['selected_package']['name'])
-                else:
-                    st.session_state['payment_message_type'] = 'warning'
-                    st.session_state['payment_message_text'] = _('invalid_code')
-                st.rerun() # Rerun to display message
-
-        elif pay_option == _('visa_card'):
-            card_number = st.text_input(_('visa_card_number'), key="card_number_input")
-            col1, col2 = st.columns(2)
-            with col1:
-                expiry_date = st.text_input(_('expiry_date'), key="expiry_date_input")
-            with col2:
-                cvv = st.text_input(_('cvv'), type="password", key="cvv_input")
-
-            if st.button(_('confirm_visa_payment'), key="confirm_visa_payment_btn"):
-                # In a real application, card validation and payment gateway integration would happen here
-                if len(card_number) == 16 and len(expiry_date) == 5 and len(cvv) == 3:
-                    st.session_state['payment_message_type'] = 'success'
-                    st.session_state['payment_message_text'] = _('purchase_success_visa').format(package_name=st.session_state['selected_package']['name'])
-                else:
-                    st.session_state['payment_message_type'] = 'error'
-                    st.session_state['payment_message_text'] = _('invalid_card_data')
-                st.rerun() # Rerun to display message
-        
-        st.markdown("</div>", unsafe_allow_html=True) # Close payment-form-container
-
-# Display payment message
-if st.session_state['payment_message_text']:
-    if st.session_state['payment_message_type'] == 'success':
-        st.success(st.session_state['payment_message_text'])
-    elif st.session_state['payment_message_type'] == 'warning':
-        st.warning(st.session_state['payment_message_text'])
-    elif st.session_state['payment_message_type'] == 'error':
-        st.error(st.session_state['payment_message_text'])
+    st.markdown(f"<h3 style='text-align:cen
